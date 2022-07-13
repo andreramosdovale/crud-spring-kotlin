@@ -13,6 +13,10 @@ class CustomerController {
     fun findAll(): List<CustomerModel> {
         return customers
     }
+    @GetMapping("/{id}")
+    fun findByID(@PathVariable id: String): CustomerModel {
+        return customers.first { it.id == id }
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
