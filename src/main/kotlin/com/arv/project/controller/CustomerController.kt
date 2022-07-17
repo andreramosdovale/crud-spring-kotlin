@@ -2,6 +2,7 @@ package com.arv.project.controller
 
 import com.arv.project.controller.request.PostCustomerRequest
 import com.arv.project.controller.request.PutCustomerRequest
+import com.arv.project.extension.toCustomerModel
 import com.arv.project.model.CustomerModel
 import com.arv.project.service.CustomerService
 import org.springframework.http.HttpStatus
@@ -24,13 +25,13 @@ class CustomerController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody customer: PostCustomerRequest): CustomerModel {
-        return customerService.create(customer);
+        return customerService.create(customer.toCustomerModel());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun update(@PathVariable id: String, @RequestBody obj: PutCustomerRequest) {
-        return customerService.update(id, obj)
+    fun update(@PathVariable id: String, @RequestBody customer: PutCustomerRequest) {
+        return customerService.update(customer.toCustomerModel(id))
     }
 
     @DeleteMapping("/{id}")
