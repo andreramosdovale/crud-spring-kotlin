@@ -1,46 +1,42 @@
 package com.arv.project.service
 
 import com.arv.project.model.CustomerModel
+import com.arv.project.repository.CustomerRepository
 import org.springframework.stereotype.Service
 
 @Service
-class CustomerService {
-    val customers = mutableListOf<CustomerModel>()
-
+class CustomerService(
+    val repository: CustomerRepository
+) {
     fun findAll(name: String?): List<CustomerModel> {
         name?.let {
-            return customers.filter { it.name.contains(name, true) }
+            return repository.findByNameContaining(it)
         }
 
-        return customers
+        return repository.findAll().toList()
     }
 
     fun findById(id: Int): CustomerModel {
-        return customers.first { it.id == id }
+        return repository.findById(id).orElseThrow()
     }
 
-    fun create(customer: CustomerModel): CustomerModel {
-        val id = if (customers.isEmpty()) {
-            1
-        } else {
-            customers.last().id!!.toInt() + 1
-        }
-
-        customer.id = id
-
-        customers.add(customer)
-
-        return customers.find { it.id == id }!!
+    fun create(customer: CustomerModel) {
+        repository.save(customer)
     }
 
     fun update(customer: CustomerModel) {
-        customers.first { it.id == customer.id }.let {
-            it.name = customer.name
-            it.email = customer.email
+        if (!repository.existsById(customer.id!!)) {
+            throw Exception()
         }
+
+        repository.save(customer)
     }
 
     fun delete(id: Int) {
-        customers.removeIf { it.id == id }
+        if (!repository.existsById(id)) {
+            throw Exception()
+        }
+
+        repository.deleteById(id)
     }
 }
