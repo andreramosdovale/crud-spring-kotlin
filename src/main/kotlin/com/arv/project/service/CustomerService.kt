@@ -1,10 +1,7 @@
 package com.arv.project.service
 
-import com.arv.project.controller.request.PostCustomerRequest
-import com.arv.project.controller.request.PutCustomerRequest
 import com.arv.project.model.CustomerModel
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestBody
 
 @Service
 class CustomerService {
