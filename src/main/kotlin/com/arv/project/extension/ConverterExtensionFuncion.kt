@@ -2,6 +2,7 @@ package com.arv.project.extension
 
 import com.arv.project.controller.request.PostBookRequest
 import com.arv.project.controller.request.PostCustomerRequest
+import com.arv.project.controller.request.PutBookRequest
 import com.arv.project.controller.request.PutCustomerRequest
 import com.arv.project.emuns.BookStatus
 import com.arv.project.model.BookModel
@@ -21,5 +22,15 @@ fun PostBookRequest.toBookModel(customer: CustomerModel): BookModel {
         price = this.price,
         status = BookStatus.ATIVO,
         customer = customer
+    )
+}
+
+fun PutBookRequest.toBookModel(previousValue: BookModel): BookModel {
+    return BookModel(
+        id = previousValue.id,
+        name = this.name ?: previousValue.name,
+        price = this.price ?: previousValue.price,
+        status = previousValue.status,
+        customer = previousValue.customer
     )
 }

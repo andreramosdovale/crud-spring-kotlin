@@ -20,4 +20,19 @@ class BookService(
     fun findActives(): List<BookModel> {
         return repository.findByStatus(BookStatus.ATIVO)
     }
+
+    fun findById(id: Int): BookModel {
+        return repository.findById(id).orElseThrow()
+    }
+
+    fun delete(id: Int) {
+        val book = findById(id)
+
+        book.status = BookStatus.CANCELADO
+        repository.save(book)
+    }
+
+    fun update(book: BookModel) {
+        repository.save(book)
+    }
 }
